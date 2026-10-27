@@ -141,7 +141,7 @@ export default function TagModal({ isOpen, onClose, onTagChanged, tag }) {
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg bg-red-500/10 p-3 text-sm text-red-400 border border-red-500/20">
+          <div className="mb-4 rounded-lg bg-danger/10 p-3 text-sm text-danger-soft border border-danger/20">
             {error}
           </div>
         )}
@@ -186,7 +186,7 @@ export default function TagModal({ isOpen, onClose, onTagChanged, tag }) {
             <button
               type="submit"
               disabled={loading || !tagName.trim()}
-              className="w-full rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 transition-colors disabled:opacity-50"
+              className="w-full rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink hover:bg-accent-soft transition-colors disabled:opacity-50"
             >
               {loading ? "Saving..." : isEditing ? "Update Tag" : "Create"}
             </button>

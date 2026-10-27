@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { NavLink, Link } from "react-router-dom";
+import ramyLogo from "../assets/ram.png";
 import { IoSearch } from "react-icons/io5";
 import { PiNotebookLight } from "react-icons/pi";
 import { RiShieldUserLine } from "react-icons/ri";
@@ -247,40 +248,76 @@ export default function Sidebar({ onCloseMobile }) {
   };
 
   const getLinkClass = ({ isActive }) =>
-    `flex items-center gap-3 py-2 rounded-md transition-colors duration-200 cursor-pointer ${
-      collapsed ? "md:justify-center md:px-0 px-3" : "px-3"
-    } ${
-      isActive
-        ? "bg-zinc-900 text-white font-semibold border-l-2 border-indigo-600"
-        : "text-zinc-400 hover:bg-zinc-900/50 hover:text-white"
-    }`;
-
-  const getItemLinkClass = ({ isActive }) =>
-    `flex items-center gap-2 py-1.5 rounded-md text-sm cursor-pointer transition-colors w-full ${
+    `group flex items-center gap-3 rounded-xl py-1.5 text-sm transition-colors duration-150 cursor-pointer ${
       collapsed ? "md:justify-center md:px-0 px-2" : "px-2"
     } ${
       isActive
         ? "bg-zinc-900 text-white font-medium"
-        : "hover:bg-zinc-900/60 text-zinc-300"
+        : "text-zinc-400 hover:bg-zinc-900/70 hover:text-white"
+    }`;
+
+  const renderNavItem = (to, Icon, label) => (
+    <NavLink
+      key={to}
+      to={to}
+      onClick={handleNavClick}
+      className={getLinkClass}
+      title={label}
+    >
+      {({ isActive }) => (
+        <>
+          <span
+            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors duration-150 ${
+              isActive
+                ? "bg-accent text-accent-ink"
+                : "bg-zinc-800/60 text-zinc-400 group-hover:text-white"
+            }`}
+          >
+            <Icon size={16} />
+          </span>
+          {showLabels && <span className="flex-1 truncate">{label}</span>}
+        </>
+      )}
+    </NavLink>
+  );
+
+  const getItemLinkClass = ({ isActive }) =>
+    `flex items-center gap-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition-colors w-full ${
+      collapsed ? "md:justify-center md:px-0 px-2" : "px-2.5"
+    } ${
+      isActive
+        ? "bg-zinc-900 text-white font-medium"
+        : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
     }`;
 
   return (
     <>
       <nav
-        className={`bg-zinc-850 h-screen shrink-0 text-white flex flex-col transition-all duration-300 select-none ${
+        className={`bg-zinc-850 border-r border-zinc-800 h-screen shrink-0 text-white flex flex-col transition-all duration-300 select-none ${
           collapsed ? "w-[280px] md:w-[64px]" : "w-[280px] md:w-[260px]"
         }`}
       >
         {/* Header */}
-        <div className="border-b border-zinc-700 p-4 flex items-center justify-between shrink-0">
+        <div
+          className={`border-b border-zinc-800 p-4 flex items-center shrink-0 ${
+            collapsed ? "justify-between md:justify-center" : "justify-between"
+          }`}
+        >
           {showLabels && (
-            <div className="overflow-hidden pr-2">
-              <h1 className="text-sm font-semibold truncate">
-                Welcome, {user?.name || "User"}
-              </h1>
-              <p className="text-xs text-zinc-400 truncate">
-                Ready to get started?
-              </p>
+            <div className="flex items-center gap-2.5 overflow-hidden pr-2">
+              <img
+                src={ramyLogo}
+                alt="Ramy"
+                className="w-8 h-8 rounded-xl object-cover shrink-0"
+              />
+              <div className="min-w-0">
+                <h1 className="font-belanosima text-base leading-tight tracking-wide truncate">
+                  Ramy
+                </h1>
+                <p className="text-[11px] text-zinc-500 truncate">
+                  Hi, {user?.name?.split(" ")[0] || "there"}
+                </p>
+              </div>
             </div>
           )}
 
@@ -288,13 +325,13 @@ export default function Sidebar({ onCloseMobile }) {
           <button
             type="button"
             onClick={toggleCollapsed}
-            className="hidden md:block text-zinc-400 hover:text-white shrink-0 p-1 rounded-md hover:bg-zinc-700 transition-colors"
+            className="hidden md:block text-zinc-400 hover:text-white shrink-0 p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
-              <LuPanelLeftOpen size={20} />
+              <LuPanelLeftOpen size={18} />
             ) : (
-              <LuPanelLeftClose size={20} />
+              <LuPanelLeftClose size={18} />
             )}
           </button>
 
@@ -303,10 +340,10 @@ export default function Sidebar({ onCloseMobile }) {
             <button
               type="button"
               onClick={onCloseMobile}
-              className="md:hidden text-zinc-400 hover:text-white shrink-0 p-1 rounded-md hover:bg-zinc-700 transition-colors"
+              className="md:hidden text-zinc-400 hover:text-white shrink-0 p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
               aria-label="Close sidebar"
             >
-              <LuX size={20} />
+              <LuX size={18} />
             </button>
           )}
         </div>
@@ -327,14 +364,14 @@ export default function Sidebar({ onCloseMobile }) {
                 }
                 handleNavClick();
               }}
-              className={`relative flex items-center rounded-md bg-zinc-700 hover:bg-zinc-900 text-sm text-zinc-400 transition-colors duration-200 w-full pl-9 pr-4 py-2 text-left ${
+              className={`relative flex items-center rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:text-white text-sm text-zinc-500 transition-colors duration-150 w-full pl-9 pr-4 py-2 text-left ${
                 collapsed
                   ? "md:w-10 md:h-10 md:justify-center md:mx-auto md:p-0"
                   : ""
               }`}
             >
               <IoSearch
-                className={`text-zinc-400 text-lg shrink-0 ${
+                className={`text-zinc-500 text-base shrink-0 ${
                   collapsed ? "absolute left-3 md:static" : "absolute left-3"
                 }`}
               />
@@ -344,58 +381,15 @@ export default function Sidebar({ onCloseMobile }) {
 
           {/* Nav Items */}
           <div className="px-3 space-y-1">
-            <NavLink
-              to="/notes"
-              onClick={handleNavClick}
-              className={getLinkClass}
-              title="My Notes"
-            >
-              <PiNotebookLight size={20} className="shrink-0" />
-              {showLabels && (
-                <span className="text-sm flex-1 truncate">My Notes</span>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/todos"
-              onClick={handleNavClick}
-              className={getLinkClass}
-              title="My To-do"
-            >
-              <LuListTodo size={20} className="shrink-0" />
-              {showLabels && (
-                <span className="text-sm flex-1 truncate">My To-do</span>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/journals"
-              onClick={handleNavClick}
-              className={getLinkClass}
-              title="My Journals"
-            >
-              <LuPencilLine size={20} className="shrink-0" />
-              {showLabels && (
-                <span className="text-sm flex-1 truncate">My Journals</span>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/trash"
-              onClick={handleNavClick}
-              className={getLinkClass}
-              title="Trash"
-            >
-              <LuTrash2 size={20} className="shrink-0" />
-              {showLabels && (
-                <span className="text-sm flex-1 truncate">Trash</span>
-              )}
-            </NavLink>
+            {renderNavItem("/notes", PiNotebookLight, "My Notes")}
+            {renderNavItem("/todos", LuListTodo, "My To-do")}
+            {renderNavItem("/journals", LuPencilLine, "My Journals")}
+            {renderNavItem("/trash", LuTrash2, "Trash")}
 
             {/* FOLDERS SECTION */}
-            <div className="py-2">
+            <div className="mt-2 border-t border-zinc-800 pt-3">
               {showLabels && (
-                <div className="flex items-center justify-between text-zinc-400 font-medium text-xs px-3">
+                <div className="flex items-center justify-between text-zinc-500 font-semibold text-[11px] uppercase tracking-wider px-3">
                   <button
                     type="button"
                     onClick={toggleFoldersOpen}
@@ -412,7 +406,7 @@ export default function Sidebar({ onCloseMobile }) {
                   <button
                     type="button"
                     onClick={handleOpenCreateFolderModal}
-                    className="p-1 rounded hover:bg-zinc-900/50 hover:text-white transition-colors"
+                    className="p-1 rounded-md hover:bg-zinc-800 hover:text-white transition-colors"
                     title="New folder"
                   >
                     <GoPlus size={14} />
@@ -428,7 +422,11 @@ export default function Sidebar({ onCloseMobile }) {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <ul className="mt-1 space-y-1 px-1">
+                  <ul
+                    className={`mt-1 space-y-0.5 ${
+                      showLabels ? "ml-5 border-l border-zinc-800 pl-2" : "px-1"
+                    }`}
+                  >
                     {folders.map((folder) => {
                       const id = folder.id || folder._id;
                       return (
@@ -445,7 +443,7 @@ export default function Sidebar({ onCloseMobile }) {
                             title={folder.name}
                           >
                             <LuFolder
-                              size={15}
+                              size={16}
                               className="shrink-0"
                               style={{
                                 color:
@@ -456,7 +454,7 @@ export default function Sidebar({ onCloseMobile }) {
                               }}
                             />
                             {showLabels && (
-                              <span className="truncate flex-1 text-zinc-400 text-xs">
+                              <span className="truncate flex-1">
                                 {folder.name}
                               </span>
                             )}
@@ -470,9 +468,9 @@ export default function Sidebar({ onCloseMobile }) {
             </div>
 
             {/* TAGS SECTION */}
-            <div className="py-2">
+            <div className="mt-2 border-t border-zinc-800 pt-3">
               {showLabels && (
-                <div className="flex items-center justify-between text-zinc-400 font-medium text-xs px-3">
+                <div className="flex items-center justify-between text-zinc-500 font-semibold text-[11px] uppercase tracking-wider px-3">
                   <button
                     type="button"
                     onClick={toggleTagsOpen}
@@ -489,7 +487,7 @@ export default function Sidebar({ onCloseMobile }) {
                   <button
                     type="button"
                     onClick={handleOpenCreateTagModal}
-                    className="p-1 rounded hover:bg-zinc-900/50 hover:text-white transition-colors"
+                    className="p-1 rounded-md hover:bg-zinc-800 hover:text-white transition-colors"
                     title="New tag"
                   >
                     <GoPlus size={14} />
@@ -505,7 +503,11 @@ export default function Sidebar({ onCloseMobile }) {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <ul className="mt-1 space-y-1 px-1">
+                  <ul
+                    className={`mt-1 space-y-0.5 ${
+                      showLabels ? "ml-5 border-l border-zinc-800 pl-2" : "px-1"
+                    }`}
+                  >
                     {tags.map((t) => {
                       const id = t.id || t._id;
                       const label =
@@ -523,14 +525,14 @@ export default function Sidebar({ onCloseMobile }) {
                             title={label}
                           >
                             <LuTag
-                              size={13}
+                              size={14}
                               className="shrink-0"
                               style={{
                                 color: getTagColor(id) || t.color || "#3b82f6",
                               }}
                             />
                             {showLabels && (
-                              <span className="truncate flex-1 text-zinc-400 text-xs">
+                              <span className="truncate flex-1">
                                 {label}
                               </span>
                             )}
@@ -545,32 +547,24 @@ export default function Sidebar({ onCloseMobile }) {
 
             {/* Admin Link */}
             {user?.role === "ADMIN" && (
-              <NavLink
-                to="/admin"
-                onClick={handleNavClick}
-                className={getLinkClass}
-                title="Admin"
-              >
-                <RiShieldUserLine size={20} className="shrink-0" />
-                {showLabels && (
-                  <span className="text-sm flex-1 truncate">Admin</span>
-                )}
-              </NavLink>
+              <div className="mt-2 border-t border-zinc-800 pt-3">
+                {renderNavItem("/admin", RiShieldUserLine, "Admin")}
+              </div>
             )}
           </div>
         </div>
 
         {/* User Footer */}
-        <div className="p-3 border-t border-zinc-700 bg-zinc-850 shrink-0">
+        <div className="p-3 border-t border-zinc-800 shrink-0">
           <Link
             to="/settings"
             onClick={handleNavClick}
-            className={`flex items-center gap-3 rounded-md hover:bg-zinc-700/60 transition-colors text-zinc-200 ${
+            className={`flex items-center gap-3 rounded-xl hover:bg-zinc-900 transition-colors text-zinc-200 ${
               collapsed ? "md:justify-center md:p-2 p-2" : "p-2"
             }`}
             title="Settings"
           >
-            <div className="w-8 h-8 rounded-full bg-zinc-700 border border-zinc-600 text-zinc-200 flex items-center justify-center text-xs font-semibold shrink-0 overflow-hidden">
+            <div className="w-9 h-9 rounded-full bg-accent/15 border border-accent/30 text-accent-soft flex items-center justify-center text-sm font-semibold shrink-0 overflow-hidden">
               {user?.avatar ? (
                 <img
                   src={user.avatar}
@@ -605,23 +599,23 @@ export default function Sidebar({ onCloseMobile }) {
       {/* Context Menu */}
       {contextMenu && (
         <div
-          className="fixed z-50 w-40 bg-zinc-900 border border-zinc-700 rounded-md shadow-lg py-1 text-sm select-none"
+          className="fixed z-50 w-40 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl shadow-black/40 p-1 text-sm select-none menu-pop"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onClick={(e) => e.stopPropagation()}
         >
           <button
             type="button"
             onClick={handleContextEdit}
-            className="w-full flex items-center gap-2 px-3 py-1.5 text-zinc-200 hover:bg-zinc-700 text-left"
+            className="w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-zinc-200 hover:bg-zinc-800 text-left transition-colors"
           >
-            <LuPencil size={13} /> Edit
+            <LuPencil size={14} /> Edit
           </button>
           <button
             type="button"
             onClick={handleContextDelete}
-            className="w-full flex items-center gap-2 px-3 py-1.5 text-red-400 hover:bg-zinc-700 text-left"
+            className="w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-danger-soft hover:bg-danger/10 text-left transition-colors"
           >
-            <LuTrash2 size={13} /> Delete
+            <LuTrash2 size={14} /> Delete
           </button>
         </div>
       )}

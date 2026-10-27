@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { LuTriangleAlert } from "react-icons/lu";
+import { LuTriangleAlert, LuLogOut } from "react-icons/lu";
 
 export default function ConfirmModal({
   isOpen,
@@ -8,10 +8,15 @@ export default function ConfirmModal({
   message,
   onClose,
   onConfirm,
+  confirmLabel = "Delete Forever",
+  loadingLabel = "Deleting...",
+  variant = "danger",
 }) {
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
+
+  const isAccent = variant === "accent";
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -47,10 +52,14 @@ export default function ConfirmModal({
         </div>
 
         <div className="mt-4 flex gap-2.5 text-sm text-zinc-400 bg-zinc-800/60 border border-zinc-700 rounded-lg p-3">
-          <LuTriangleAlert
-            size={16}
-            className="text-amber-400 shrink-0 mt-0.5"
-          />
+          {isAccent ? (
+            <LuLogOut size={16} className="text-accent-soft shrink-0 mt-0.5" />
+          ) : (
+            <LuTriangleAlert
+              size={16}
+              className="text-amber-400 shrink-0 mt-0.5"
+            />
+          )}
           <p>{message}</p>
         </div>
 
@@ -67,9 +76,13 @@ export default function ConfirmModal({
             type="button"
             onClick={handleConfirm}
             disabled={loading}
-            className="px-4 py-2 rounded-lg text-sm bg-red-600 hover:bg-red-500 text-white disabled:opacity-50"
+            className={`px-4 py-2 rounded-lg text-sm disabled:opacity-50 ${
+              isAccent
+                ? "bg-accent hover:bg-accent-soft text-accent-ink font-medium"
+                : "bg-danger hover:bg-danger-strong text-danger-ink"
+            }`}
           >
-            {loading ? "Deleting..." : "Delete Forever"}
+            {loading ? loadingLabel : confirmLabel}
           </button>
         </div>
       </div>

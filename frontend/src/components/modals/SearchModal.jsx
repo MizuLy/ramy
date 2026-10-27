@@ -5,6 +5,28 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import { getTags, getNotes } from "../../api/axios"; // Adjust path if needed
 
+const stripHtml = (html) => {
+  if (!html) return "";
+  try {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
+  } catch {
+    return "";
+  }
+};
+
+// Short excerpt of the note text, centred on the first match when there is one.
+const getSnippet = (text, query) => {
+  if (!text) return "";
+  const index = query ? text.toLowerCase().indexOf(query) : -1;
+  if (index === -1) return text.slice(0, 110);
+  const start = Math.max(0, index - 30);
+  const end = Math.min(text.length, index + query.length + 80);
+  return `${start > 0 ? "..." : ""}${text.slice(start, end)}${
+    end < text.length ? "..." : ""
+  }`;
+};
+
 export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -96,7 +118,7 @@ export default function SearchModal() {
       const matchesQuery =
         !query ||
         note.title?.toLowerCase().includes(query) ||
-        note.content?.toLowerCase().includes(query);
+        stripHtml(note.body).toLowerCase().includes(query);
 
       // Selected tags filter
       const matchesTags =
@@ -126,7 +148,7 @@ export default function SearchModal() {
         >
           {/* Modal Content Scale + Fade */}
           <div
-            className={`relative w-full max-w-lg bg-zinc-800 text-white rounded-xl border border-zinc-700 p-6 shadow-2xl mx-4 overflow-hidden transform transition-all duration-200 ease-out flex flex-col max-h-[80vh] ${
+            className={`relative w-full max-w-lg bg-zinc-900 text-white rounded-2xl border border-zinc-700 p-5 shadow-2xl shadow-black/50 mx-4 overflow-hidden transform transition-all duration-200 ease-out flex flex-col max-h-[80vh] ${
               isAnimating
                 ? "opacity-100 scale-100 translate-y-0"
                 : "opacity-0 scale-95 -translate-y-2"
@@ -144,7 +166,7 @@ export default function SearchModal() {
                 className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-700/60 transition-colors"
                 title="Close"
               >
-                <IoClose size={20} />
+                <IoClose size={18} />
               </button>
             </div>
 
@@ -156,7 +178,7 @@ export default function SearchModal() {
                 placeholder="Type to search notes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-zinc-900/80 text-sm text-white placeholder-zinc-500 border border-zinc-700/80 outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950 text-sm text-white placeholder-zinc-500 border border-zinc-800 outline-none focus:border-accent/60 transition-colors"
                 autoFocus
               />
             </div>
@@ -180,8 +202,8 @@ export default function SearchModal() {
                         onClick={() => handleToggleTag(tagId)}
                         className={`px-3 py-1 text-xs rounded-full border transition-all ${
                           isSelected
-                            ? "bg-blue-600 border-blue-500 text-white font-medium shadow-sm"
-                            : "border-zinc-600 text-zinc-300 hover:bg-zinc-700 hover:border-zinc-500"
+                            ? "bg-accent/15 border-accent/40 text-accent-soft font-medium"
+                            : "border-zinc-700 text-zinc-400 hover:bg-zinc-800 hover:text-white"
                         }`}
                       >
                         {label}
@@ -197,24 +219,28 @@ export default function SearchModal() {
               {filteredNotes.length > 0 ? (
                 filteredNotes.map((note) => {
                   const noteId = note.id || note._id;
+                  const snippet = getSnippet(
+                    stripHtml(note.body),
+                    searchTerm.toLowerCase().trim(),
+                  );
                   return (
                     <button
                       key={noteId}
                       type="button"
                       onClick={() => handleSelectNote(noteId)}
-                      className="w-full text-left p-3 rounded-lg bg-zinc-900/40 hover:bg-zinc-700/50 border border-transparent hover:border-zinc-600 transition-all flex items-start gap-3 group"
+                      className="w-full text-left p-3 rounded-xl hover:bg-zinc-800 border border-transparent transition-colors flex items-start gap-3 group"
                     >
                       <LuFileText
                         size={18}
-                        className="text-zinc-400 group-hover:text-blue-400 shrink-0 mt-0.5 transition-colors"
+                        className="text-zinc-500 group-hover:text-accent-soft shrink-0 mt-0.5 transition-colors"
                       />
                       <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-zinc-200 group-hover:text-white truncate">
                           {note.title || "Untitled Note"}
                         </h4>
-                        {note.content && (
-                          <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">
-                            {note.content}
+                        {snippet && (
+                          <p className="text-xs text-zinc-500 line-clamp-1 mt-0.5">
+                            {snippet}
                           </p>
                         )}
                       </div>

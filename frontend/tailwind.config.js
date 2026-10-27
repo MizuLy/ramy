@@ -14,9 +14,23 @@ export default {
           800: "rgb(var(--color-zinc-800) / <alpha-value>)",
           700: "rgb(var(--color-zinc-700) / <alpha-value>)",
           500: "rgb(var(--color-zinc-500) / <alpha-value>)",
+          600: "rgb(var(--color-zinc-600) / <alpha-value>)",
+          300: "rgb(var(--color-zinc-300) / <alpha-value>)",
           400: "rgb(var(--color-zinc-400) / <alpha-value>)",
           200: "rgb(var(--color-zinc-200) / <alpha-value>)",
           100: "rgb(var(--color-zinc-100) / <alpha-value>)",
+        },
+        accent: {
+          soft: "rgb(var(--accent-soft) / <alpha-value>)",
+          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
+          strong: "rgb(var(--accent-strong) / <alpha-value>)",
+          ink: "rgb(var(--accent-ink) / <alpha-value>)",
+        },
+        danger: {
+          soft: "rgb(var(--danger-soft) / <alpha-value>)",
+          DEFAULT: "rgb(var(--danger) / <alpha-value>)",
+          strong: "rgb(var(--danger-strong) / <alpha-value>)",
+          ink: "rgb(var(--danger-ink) / <alpha-value>)",
         },
         neutral: {
           950: "rgb(var(--color-neutral-950) / <alpha-value>)",
@@ -39,8 +53,5 @@ export default {
       },
     },
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: ["light", "dark", "black"],
-  },
+  plugins: [],
 };

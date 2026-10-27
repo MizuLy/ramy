@@ -30,7 +30,7 @@ export default function Trash() {
   }, []);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="flex h-full w-full overflow-hidden">
       {/* List pane: full width on mobile when nothing is selected, hidden once a note is open. Always visible side-by-side from sm breakpoint up. */}
       <div className={`${id ? "hidden" : "flex"} sm:flex w-full sm:w-auto`}>
         <NoteList

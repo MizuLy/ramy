@@ -13,6 +13,9 @@ import {
 import { MdOutlineColorLens } from "react-icons/md";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import PageShell from "../../components/PageShell";
+import PageHeader from "../../components/PageHeader";
+import { LuSettings } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthProvider";
 import { useTheme } from "../../context/ThemeProvider";
@@ -52,6 +55,7 @@ export default function Settings() {
 
   // Modal
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   useEffect(() => {
     document.title = "Settings | Ramy";
@@ -224,20 +228,19 @@ export default function Settings() {
   ];
 
   return (
-    <div className="flex-1 h-screen overflow-y-auto bg-zinc-950 text-white">
-      <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6 sm:py-10 space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold mb-1">Settings</h1>
-          <p className="text-sm text-zinc-500">
-            Manage your profile, security, and workspace preferences.
-          </p>
-        </div>
+    <PageShell>
+      <div className="space-y-6">
+        <PageHeader
+          icon={LuSettings}
+          title="Settings"
+          description="Manage your profile, security, and workspace preferences."
+        />
 
         {/* Profile Card */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-9 h-9 rounded-md bg-zinc-800 flex items-center justify-center shrink-0">
-              <LuUserRound size={20} />
+              <LuUserRound size={18} />
             </div>
             <div>
               <h2 className="text-sm font-semibold">Profile</h2>
@@ -301,7 +304,7 @@ export default function Settings() {
                 <button
                   onClick={handleSaveName}
                   disabled={nameSaving || name === user?.name}
-                  className="px-3 py-2 rounded-md bg-zinc-100 text-zinc-900 text-xs font-medium hover:bg-zinc-300 disabled:opacity-50 transition-colors shrink-0"
+                  className="px-3 py-2 rounded-md bg-accent text-accent-ink text-xs font-medium hover:bg-accent-soft disabled:opacity-50 transition-colors shrink-0"
                 >
                   {nameSaving ? "..." : "Save"}
                 </button>
@@ -337,7 +340,7 @@ export default function Settings() {
                 <button
                   onClick={handleChangeEmail}
                   disabled={emailSaving || !emailPassword}
-                  className="px-4 py-2 rounded-md bg-zinc-100 text-zinc-900 text-sm font-medium hover:bg-zinc-300 disabled:opacity-50 transition-colors shrink-0"
+                  className="px-4 py-2 rounded-md bg-accent text-accent-ink text-sm font-medium hover:bg-accent-soft disabled:opacity-50 transition-colors shrink-0"
                 >
                   {emailSaving ? "Saving..." : "Update email"}
                 </button>
@@ -350,7 +353,7 @@ export default function Settings() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-9 h-9 rounded-md bg-zinc-800 flex items-center justify-center shrink-0">
-              <LuKeyRound size={20} />
+              <LuKeyRound size={18} />
             </div>
             <div>
               <h2 className="text-sm font-semibold">Security</h2>
@@ -399,7 +402,7 @@ export default function Settings() {
           <button
             onClick={handleChangePassword}
             disabled={passwordSaving || !currentPassword || !newPassword}
-            className="mt-4 w-full sm:w-auto px-4 py-2 rounded-md bg-zinc-100 text-zinc-900 text-sm font-medium hover:bg-zinc-300 disabled:opacity-50 transition-colors"
+            className="mt-4 w-full sm:w-auto px-4 py-2 rounded-md bg-accent text-accent-ink text-sm font-medium hover:bg-accent-soft disabled:opacity-50 transition-colors"
           >
             {passwordSaving ? "Updating..." : "Update password"}
           </button>
@@ -409,7 +412,7 @@ export default function Settings() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-9 h-9 rounded-md bg-zinc-800 flex items-center justify-center shrink-0">
-              <MdOutlineColorLens size={20} />
+              <MdOutlineColorLens size={18} />
             </div>
             <div>
               <h2 className="text-sm font-semibold">Appearance</h2>
@@ -449,16 +452,16 @@ export default function Settings() {
         </div>
 
         {/* Account Card */}
-        <div className="bg-zinc-900 border border-red-900/40 rounded-lg p-4 sm:p-6">
+        <div className="bg-zinc-900 border border-danger/30 rounded-lg p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-9 h-9 rounded-md bg-red-100 dark:bg-red-950/40 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-md bg-danger/10 flex items-center justify-center shrink-0">
               <RiLogoutBoxRLine
                 size={18}
-                className="text-red-600 dark:text-red-400"
+                className="text-danger-soft"
               />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-red-400">Account</h2>
+              <h2 className="text-sm font-semibold text-danger-soft">Account</h2>
               <p className="text-xs text-zinc-500">
                 Sign out or permanently delete your account.
               </p>
@@ -473,17 +476,28 @@ export default function Settings() {
               </p>
             </div>
             <button
-              onClick={handleLogout}
+              onClick={() => setLogoutConfirmOpen(true)}
               className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-zinc-800 hover:bg-zinc-700 text-sm font-medium transition-colors shrink-0"
             >
               <RiLogoutBoxRLine size={16} aria-hidden="true" />
               Sign out
             </button>
+
+            <ConfirmModal
+              isOpen={logoutConfirmOpen}
+              title="Sign out?"
+              message="You'll need to log back in to access your notes, todos, and journals."
+              confirmLabel="Sign out"
+              loadingLabel="Signing out..."
+              variant="accent"
+              onClose={() => setLogoutConfirmOpen(false)}
+              onConfirm={handleLogout}
+            />
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 border-t border-zinc-800">
             <div>
-              <p className="text-sm font-medium text-red-400">Delete account</p>
+              <p className="text-sm font-medium text-danger-soft">Delete account</p>
               <p className="text-xs text-zinc-500">
                 Permanently remove your account and all notes. This cannot be
                 undone.
@@ -491,7 +505,7 @@ export default function Settings() {
             </div>
             <button
               onClick={() => setDeleteConfirmOpen(true)}
-              className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors shrink-0"
+              className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-danger hover:bg-danger-strong text-danger-ink text-sm font-medium transition-colors shrink-0"
             >
               <LuTrash2 size={14} />
               Delete
@@ -507,6 +521,6 @@ export default function Settings() {
           </div>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

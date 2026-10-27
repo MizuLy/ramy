@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 import { verifyOtp, requestOtp } from "../../api/axios";
 
 export default function VerifyOtp() {
@@ -120,6 +121,8 @@ export default function VerifyOtp() {
 
   return (
     <div className="w-full max-w-md mx-auto p-8 rounded-2xl bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/80 shadow-2xl shadow-black/80">
+      <BackButton to="/login" label="Back to login" always className="mb-4" />
+
       {/* Header */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold tracking-tight text-zinc-100 mb-2">
@@ -158,7 +161,7 @@ export default function VerifyOtp() {
 
         {/* Feedback Messages */}
         {error && (
-          <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400 text-center font-medium animate-fadeIn">
+          <div className="p-3 rounded-lg bg-danger/10 border border-danger/20 text-xs text-danger-soft text-center font-medium animate-fadeIn">
             {error}
           </div>
         )}
@@ -172,12 +175,12 @@ export default function VerifyOtp() {
         <button
           type="submit"
           disabled={loading || otp.length !== 4}
-          className="w-full py-3 rounded-xl bg-zinc-100 text-zinc-950 font-semibold hover:bg-white active:scale-[0.99] disabled:opacity-40 disabled:hover:bg-zinc-100 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-white/5"
+          className="w-full py-3 rounded-xl bg-accent text-accent-ink font-semibold hover:bg-accent-soft active:scale-[0.99] disabled:opacity-40  disabled:cursor-not-allowed transition-all duration-200"
         >
           {loading ? (
             <span className="inline-flex items-center gap-2">
               <svg
-                className="animate-spin h-4 w-4 text-zinc-950"
+                className="animate-spin h-4 w-4 text-accent-ink"
                 viewBox="0 0 24 24"
                 fill="none"
               >

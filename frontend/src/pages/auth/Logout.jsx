@@ -31,40 +31,40 @@ export default function Logout({ collapsed }) {
           collapsed ? "justify-center w-full" : ""
         }`}
       >
-        <HiLogout size={20} className="shrink-0" />
+        <HiLogout size={18} className="shrink-0" />
         {!collapsed && <span>Logout</span>}
       </button>
 
-      <dialog id="logoutModal" className="modal">
-        <div className="modal-box bg-zinc-800 text-white max-w-sm">
+      <dialog
+        id="logoutModal"
+        className="m-auto w-full max-w-sm bg-transparent p-4 backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+        onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
+      >
+        <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-6 text-white shadow-2xl menu-pop">
           <h3 className="font-bold text-lg mb-2">Log out?</h3>
           <p className="text-sm text-zinc-400 mb-6">
             You'll need to log back in to access your notes.
           </p>
 
-          <div className="modal-action">
+          <div className="flex justify-end">
             <form method="dialog" className="flex gap-2">
               <button
                 type="button"
                 onClick={() => document.getElementById("logoutModal")?.close()}
-                className="btn btn-sm btn-ghost"
+                className="px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="btn btn-sm bg-red-600 hover:bg-red-700 text-white border-none"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-danger hover:bg-danger-strong text-danger-ink transition-colors"
               >
                 Log out
               </button>
             </form>
           </div>
         </div>
-
-        <form method="dialog" className="modal-backdrop bg-black/60">
-          <button>close</button>
-        </form>
       </dialog>
     </>
   );

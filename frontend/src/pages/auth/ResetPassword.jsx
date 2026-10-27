@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 import { resetPassword } from "../../api/axios";
 
 export default function ResetPassword() {
@@ -47,7 +48,7 @@ export default function ResetPassword() {
   if (!token) {
     return (
       <div className="w-full max-w-sm bg-zinc-900/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-zinc-800/80 text-center space-y-4">
-        <div className="w-12 h-12 mx-auto rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+        <div className="w-12 h-12 mx-auto rounded-full bg-danger/10 border border-danger/20 flex items-center justify-center text-danger-soft">
           <svg
             className="w-6 h-6"
             fill="none"
@@ -72,7 +73,7 @@ export default function ResetPassword() {
         </div>
         <Link
           to="/forgot-password"
-          className="inline-block text-xs font-medium text-indigo-400 hover:text-indigo-300 hover:underline transition-colors pt-2"
+          className="inline-block text-xs font-medium text-accent-soft hover:text-accent-soft hover:underline transition-colors pt-2"
         >
           Request a new link →
         </Link>
@@ -86,6 +87,8 @@ export default function ResetPassword() {
         onSubmit={handleSubmit}
         className="w-full bg-zinc-900/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-zinc-800/80 space-y-5"
       >
+        <BackButton to="/login" label="Back to login" always />
+
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-2xl font-bold tracking-tight text-white">
@@ -98,7 +101,7 @@ export default function ResetPassword() {
 
         {/* Alerts */}
         {error && (
-          <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg backdrop-blur-sm">
+          <div className="p-3 text-xs bg-danger/10 border border-danger/20 text-danger-soft rounded-lg backdrop-blur-sm">
             {error}
           </div>
         )}
@@ -137,7 +140,7 @@ export default function ResetPassword() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
-            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-800/50 border border-zinc-700/60 text-white placeholder-zinc-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all duration-200"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-800/50 border border-zinc-700/60 text-white placeholder-zinc-500 outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm transition-all duration-200"
           />
         </div>
 
@@ -156,7 +159,7 @@ export default function ResetPassword() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-800/50 border border-zinc-700/60 text-white placeholder-zinc-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all duration-200"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-800/50 border border-zinc-700/60 text-white placeholder-zinc-500 outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm transition-all duration-200"
           />
         </div>
 
@@ -164,12 +167,12 @@ export default function ResetPassword() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none text-white text-sm font-medium rounded-lg shadow-lg shadow-indigo-600/20 transition-all duration-150 flex justify-center items-center"
+          className="w-full py-2.5 px-4 bg-accent hover:bg-accent-soft active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none text-accent-ink text-sm font-medium rounded-lg shadow-lg shadow-accent/20 transition-all duration-150 flex justify-center items-center"
         >
           {loading ? (
             <div className="flex items-center gap-2">
               <svg
-                className="animate-spin h-4 w-4 text-white"
+                className="animate-spin h-4 w-4 text-accent-ink"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

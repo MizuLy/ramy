@@ -18,6 +18,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import toast from "react-hot-toast";
 import ConfirmModal from "../../../components/modals/ConfirmModal";
+import Dropdown from "../../../components/Dropdown";
 
 import {
   LuArrowLeft,
@@ -533,7 +534,7 @@ export default function NoteEditor({
 
   if (!noteId) {
     return (
-      <div className="flex-1 h-screen flex flex-col items-center justify-center bg-zinc-950 text-zinc-500 select-none p-4">
+      <div className="flex-1 h-full flex flex-col items-center justify-center bg-zinc-950 text-zinc-500 select-none p-4">
         {onBack && (
           <button
             type="button"
@@ -550,7 +551,7 @@ export default function NoteEditor({
           type="button"
           onClick={handleCreateNew}
           disabled={creating}
-          className="px-4 py-2 bg-zinc-100 text-zinc-900 text-xs font-medium rounded-md hover:bg-zinc-300 transition-colors"
+          className="px-4 py-2 bg-accent text-accent-ink text-xs font-medium rounded-md hover:bg-accent-soft transition-colors"
         >
           {creating ? "Creating..." : "+ Create a new note"}
         </button>
@@ -566,7 +567,7 @@ export default function NoteEditor({
   const readTime = getReadTime(wordCount);
 
   return (
-    <div className="flex-1 h-screen flex flex-col bg-zinc-950 text-zinc-200 overflow-hidden relative">
+    <div className="flex-1 h-full flex flex-col bg-zinc-950 text-zinc-200 overflow-hidden relative">
       <div className="w-full max-w-2xl mx-auto flex flex-col h-full">
         {/* Top action bar */}
         <div className="px-3 sm:px-4 pt-3 sm:pt-4 flex items-center justify-between gap-2">
@@ -599,30 +600,20 @@ export default function NoteEditor({
             {!isTrash && (
               <>
                 {/* Folder selection dropdown */}
-                <div className="relative flex items-center">
-                  <LuFolder
-                    size={12}
-                    className="absolute left-2 text-zinc-500 pointer-events-none"
-                  />
-                  <select
-                    value={folderId}
-                    onChange={handleFolderChange}
-                    title="Move to folder"
-                    className="appearance-none bg-transparent border border-zinc-800 hover:bg-zinc-800 text-zinc-300 text-xs rounded-md pl-6 pr-2 py-1.5 outline-none cursor-pointer max-w-[85px] sm:max-w-[110px] truncate"
-                  >
-                    <option value="" className="bg-zinc-900">
-                      No folder
-                    </option>
-                    {folders.map((folder) => {
-                      const id = folder.id || folder._id;
-                      return (
-                        <option key={id} value={id} className="bg-zinc-900">
-                          {folder.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
+                <Dropdown
+                  value={folderId || ""}
+                  options={[
+                    { value: "", label: "No folder" },
+                    ...folders.map((folder) => ({
+                      value: folder.id || folder._id,
+                      label: folder.name,
+                    })),
+                  ]}
+                  onChange={(v) => handleFolderChange({ target: { value: v } })}
+                  icon={LuFolder}
+                  title="Move to folder"
+                  triggerClassName="rounded-lg border border-zinc-800 px-2.5 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800 hover:border-zinc-700 max-w-[120px] sm:max-w-[150px]"
+                />
 
                 <button
                   type="button"
@@ -630,12 +621,12 @@ export default function NoteEditor({
                   title={isPinned ? "Unpin note" : "Pin note"}
                   className={`p-1.5 rounded-md border transition-colors ${
                     isPinned
-                      ? "bg-zinc-100 text-zinc-900 border-zinc-100"
+                      ? "bg-accent/15 text-accent-soft border-accent/40"
                       : "text-zinc-400 border-zinc-800 hover:text-white hover:bg-zinc-800"
                   }`}
                 >
                   <LuPin
-                    size={13}
+                    size={14}
                     className={isPinned ? "rotate-45 transition-transform" : ""}
                   />
                 </button>
@@ -648,9 +639,9 @@ export default function NoteEditor({
                 onClick={handleMoveToTrash}
                 disabled={trashing || saving}
                 title="Move to trash"
-                className="p-1.5 rounded-md border border-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                className="p-1.5 rounded-md border border-zinc-800 text-zinc-400 hover:text-danger-soft hover:bg-zinc-800 transition-colors disabled:opacity-50"
               >
-                <LuTrash2 size={13} />
+                <LuTrash2 size={14} />
               </button>
             ) : (
               <>
@@ -661,16 +652,16 @@ export default function NoteEditor({
                   title="Restore note"
                   className="p-1.5 rounded-md border border-zinc-800 text-zinc-400 hover:text-green-400 hover:bg-zinc-800 transition-colors disabled:opacity-50"
                 >
-                  <LuRotateCcw size={13} />
+                  <LuRotateCcw size={14} />
                 </button>
                 <button
                   type="button"
                   onClick={handleDeleteForeverRequest}
                   disabled={trashing || saving}
                   title="Delete permanently"
-                  className="p-1.5 rounded-md border border-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                  className="p-1.5 rounded-md border border-zinc-800 text-zinc-400 hover:text-danger-soft hover:bg-zinc-800 transition-colors disabled:opacity-50"
                 >
-                  <LuTrash2 size={13} />
+                  <LuTrash2 size={14} />
                 </button>
               </>
             )}
@@ -694,7 +685,7 @@ export default function NoteEditor({
                 onClick={handleCreateNew}
                 disabled={creating}
                 title="New Note"
-                className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 bg-zinc-100 hover:bg-zinc-300 text-zinc-900 text-xs font-medium rounded-md transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 bg-accent hover:bg-accent-soft text-accent-ink text-xs font-medium rounded-md transition-colors disabled:opacity-50"
               >
                 <LuPlus size={12} />
                 <span className="hidden sm:inline">
@@ -706,7 +697,8 @@ export default function NoteEditor({
         </div>
 
         {/* Title input */}
-        <div className="px-3 sm:px-4 pt-3">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="px-3 sm:px-4 pt-4">
           <input
             type="text"
             value={title}
@@ -721,7 +713,7 @@ export default function NoteEditor({
               );
             }}
             placeholder="Untitled"
-            className="text-xl sm:text-2xl font-extrabold bg-transparent text-white outline-none w-full placeholder-zinc-700 tracking-tight"
+            className="text-2xl sm:text-3xl font-bold bg-transparent text-white outline-none w-full placeholder-zinc-600 tracking-tight"
           />
           <p className="mt-1 text-[11px] sm:text-xs text-zinc-500">
             {wordCount} {wordCount === 1 ? "word" : "words"} · {readTime}{" "}
@@ -733,7 +725,7 @@ export default function NoteEditor({
         <div className="px-3 sm:px-4 pt-3 sm:pt-4 pb-2 space-y-2 sm:space-y-2.5 text-xs text-zinc-400">
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-4">
             <span className="w-24 text-zinc-500 flex items-center gap-1.5 shrink-0 text-[11px] sm:text-xs">
-              <LuUser size={13} /> Created by
+              <LuUser size={14} /> Created by
             </span>
             <div className="flex items-center gap-2 text-zinc-300 font-medium">
               <span>{noteOwner?.name || noteOwner?.email || "Unknown"}</span>
@@ -743,7 +735,7 @@ export default function NoteEditor({
           {/* EDITORS ROW */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-4">
             <span className="w-24 text-zinc-500 flex items-center gap-1.5 shrink-0 text-[11px] sm:text-xs">
-              <LuUsers size={13} /> Editors
+              <LuUsers size={14} /> Editors
             </span>
             <div className="flex items-center gap-2">
               {/* Hover Wrapper */}
@@ -812,7 +804,7 @@ export default function NoteEditor({
                   onClick={() => setIsEditorsModalOpen(true)}
                   className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:text-white text-zinc-400 text-[11px] sm:text-xs font-medium transition-colors"
                 >
-                  <LuUserPlus size={11} /> Manage
+                  <LuUserPlus size={12} /> Manage
                 </button>
               )}
             </div>
@@ -820,7 +812,7 @@ export default function NoteEditor({
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-4">
             <span className="w-24 text-zinc-500 flex items-center gap-1.5 shrink-0 text-[11px] sm:text-xs">
-              <LuCalendar size={13} /> Last Modified
+              <LuCalendar size={14} /> Last Modified
             </span>
             <span className="text-zinc-300 font-medium">
               {formatDateFormatted(updatedAtRaw || createdAtRaw)}
@@ -829,7 +821,7 @@ export default function NoteEditor({
 
           <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4">
             <span className="w-24 text-zinc-500 flex items-center gap-1.5 shrink-0 pt-0.5 text-[11px] sm:text-xs">
-              <LuTag size={13} /> Tags
+              <LuTag size={14} /> Tags
             </span>
             <div className="flex-1 flex flex-wrap items-center gap-1.5 min-w-0">
               {selectedTags.map((tagObj, idx) => {
@@ -856,42 +848,32 @@ export default function NoteEditor({
                 );
               })}
 
-              <div className="relative inline-flex items-center">
-                <select
-                  defaultValue=""
-                  onChange={handleAddTag}
-                  className="appearance-none bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs rounded px-2 py-1 outline-none cursor-pointer"
-                >
-                  <option value="" disabled>
-                    + Add tag
-                  </option>
-                  {availableTags.map((t) => {
-                    const tagId = t.id || t._id || t.name || t.tag;
-                    const tagName = t.tag || t.name || t.tagName;
-                    return (
-                      <option key={tagId} value={tagId} className="bg-zinc-900">
-                        {tagName}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
+              <Dropdown
+                value=""
+                label="+ Add tag"
+                variant="dashed"
+                options={availableTags.map((t) => ({
+                  value: t.id || t._id || t.name || t.tag,
+                  label: t.tag || t.name || t.tagName,
+                }))}
+                onChange={(v) => handleAddTag({ target: { value: v } })}
+              />
             </div>
           </div>
         </div>
 
         {/* Toolbar */}
         {editor && (
-          <div className="mx-3 sm:mx-4 mt-2 border-y border-zinc-800/80 py-1.5 flex items-center gap-0.5 text-zinc-400 text-xs select-none overflow-x-auto custom-scrollbar shrink-0">
+          <div className="sticky top-0 z-10 mx-3 sm:mx-4 mt-3 border-y border-zinc-800 bg-zinc-950 py-1.5 flex items-center gap-0.5 text-zinc-400 text-xs select-none overflow-x-auto custom-scrollbar shrink-0">
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 1 }).run()
               }
-              className={`px-1.5 py-1 rounded font-bold hover:bg-zinc-800 hover:text-white shrink-0 ${
+              className={`px-2 py-1 rounded-lg font-bold hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
                 editor.isActive("heading", { level: 1 })
-                  ? "bg-zinc-800 text-white"
+                  ? "bg-accent/15 text-accent-soft"
                   : ""
               }`}
             >
@@ -904,9 +886,9 @@ export default function NoteEditor({
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 2 }).run()
               }
-              className={`px-1.5 py-1 rounded font-bold hover:bg-zinc-800 hover:text-white shrink-0 ${
+              className={`px-2 py-1 rounded-lg font-bold hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
                 editor.isActive("heading", { level: 2 })
-                  ? "bg-zinc-800 text-white"
+                  ? "bg-accent/15 text-accent-soft"
                   : ""
               }`}
             >
@@ -919,128 +901,128 @@ export default function NoteEditor({
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 3 }).run()
               }
-              className={`px-1.5 py-1 rounded font-bold hover:bg-zinc-800 hover:text-white shrink-0 ${
+              className={`px-2 py-1 rounded-lg font-bold hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
                 editor.isActive("heading", { level: 3 })
-                  ? "bg-zinc-800 text-white"
+                  ? "bg-accent/15 text-accent-soft"
                   : ""
               }`}
             >
               H3
             </button>
 
-            <div className="w-[1px] h-4 bg-zinc-800 mx-1 shrink-0" />
+            <div className="w-px h-5 bg-zinc-800 mx-1.5 shrink-0" />
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("bold") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("bold") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Bold"
             >
-              <LuBold size={14} />
+              <LuBold size={16} />
             </button>
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("italic") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("italic") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Italic"
             >
-              <LuItalic size={14} />
+              <LuItalic size={16} />
             </button>
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleUnderline().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("underline") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("underline") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Underline"
             >
-              <LuUnderline size={14} />
+              <LuUnderline size={16} />
             </button>
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("strike") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("strike") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Strikethrough"
             >
-              <LuStrikethrough size={14} />
+              <LuStrikethrough size={16} />
             </button>
 
-            <div className="w-[1px] h-4 bg-zinc-800 mx-1 shrink-0" />
+            <div className="w-px h-5 bg-zinc-800 mx-1.5 shrink-0" />
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("bulletList") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("bulletList") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Bullet List"
             >
-              <LuList size={14} />
+              <LuList size={16} />
             </button>
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("orderedList") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("orderedList") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Numbered List"
             >
-              <LuListOrdered size={14} />
+              <LuListOrdered size={16} />
             </button>
 
-            <div className="w-[1px] h-4 bg-zinc-800 mx-1 shrink-0" />
+            <div className="w-px h-5 bg-zinc-800 mx-1.5 shrink-0" />
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("codeBlock") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("codeBlock") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Code Block"
             >
-              <LuCode size={14} />
+              <LuCode size={16} />
             </button>
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
-              className={`p-1 rounded hover:bg-zinc-800 hover:text-white shrink-0 ${
-                editor.isActive("blockquote") ? "bg-zinc-800 text-white" : ""
+              className={`p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white shrink-0 transition-colors ${
+                editor.isActive("blockquote") ? "bg-accent/15 text-accent-soft" : ""
               }`}
               title="Quote"
             >
-              <LuQuote size={14} />
+              <LuQuote size={16} />
             </button>
 
-            <div className="w-[1px] h-4 bg-zinc-800 mx-1 shrink-0" />
+            <div className="w-px h-5 bg-zinc-800 mx-1.5 shrink-0" />
 
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().undo().run()}
               disabled={!editor.can().undo()}
-              className="p-1 rounded hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent shrink-0"
+              className="p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent shrink-0 transition-colors"
               title="Undo"
             >
-              <LuUndo size={14} />
+              <LuUndo size={16} />
             </button>
 
             <button
@@ -1048,17 +1030,18 @@ export default function NoteEditor({
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().redo().run()}
               disabled={!editor.can().redo()}
-              className="p-1 rounded hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent shrink-0"
+              className="p-1.5 rounded-lg hover:bg-zinc-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent shrink-0 transition-colors"
               title="Redo"
             >
-              <LuRedo size={14} />
+              <LuRedo size={16} />
             </button>
           </div>
         )}
 
         {/* Editor Body */}
-        <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 custom-scrollbar">
+        <div className="px-3 sm:px-4 pt-5 pb-28">
           <EditorContent editor={editor} />
+        </div>
         </div>
       </div>
 
@@ -1087,12 +1070,12 @@ export default function NoteEditor({
                   onChange={(e) => setEditorEmailInput(e.target.value)}
                   placeholder="Enter user email..."
                   required
-                  className="flex-1 px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-md text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
+                  className="flex-1 px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-accent/60 transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={editorAction?.type === "add"}
-                  className="px-3 py-1.5 bg-zinc-100 hover:bg-zinc-300 text-zinc-900 text-xs font-medium rounded-md transition-colors disabled:opacity-50 shrink-0"
+                  className="px-3 py-1.5 bg-accent hover:bg-accent-soft text-accent-ink text-xs font-medium rounded-md transition-colors disabled:opacity-50 shrink-0"
                 >
                   {editorAction?.type === "add" ? "Adding..." : "Add"}
                 </button>
@@ -1148,7 +1131,7 @@ export default function NoteEditor({
                             type="button"
                             onClick={() => handleRemoveEditor(ed.email)}
                             disabled={isRemoving}
-                            className="p-1 text-zinc-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                            className="p-1 text-zinc-400 hover:text-danger-soft transition-colors disabled:opacity-50"
                             title="Remove editor"
                           >
                             <LuX size={14} />

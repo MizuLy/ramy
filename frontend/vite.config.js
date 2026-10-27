@@ -11,8 +11,8 @@ export default defineConfig({
         name: "Ramy",
         short_name: "Ramy",
         description: "A note-taking app",
-        theme_color: "#1d1e22",
-        background_color: "#1d1e22",
+        theme_color: "#1a110d",
+        background_color: "#1a110d",
         icons: [
           {
             src: "/manifest-icon-192.maskable.png",

@@ -92,7 +92,7 @@ const TIME_FILTERS = {
 
 function NoteSkeleton() {
   return (
-    <div className="p-3.5 animate-pulse border-b border-zinc-900/80 space-y-2">
+    <div className="mx-2 my-1 rounded-xl p-3 animate-pulse space-y-2">
       <div className="h-3.5 bg-zinc-900 rounded w-1/2" />
       <div className="h-3 bg-zinc-900/60 rounded w-full" />
       <div className="h-2.5 bg-zinc-900/40 rounded w-1/3" />
@@ -201,9 +201,14 @@ export default function NoteList({
     .filter((n) =>
       !tagId ? true : (n.tags || []).some((t) => (t.id || t._id) === tagId),
     )
-    .filter((n) =>
-      (n.title || "Untitled Note").toLowerCase().includes(search.toLowerCase()),
-    )
+    .filter((n) => {
+      const query = search.trim().toLowerCase();
+      if (!query) return true;
+      return (
+        (n.title || "Untitled Note").toLowerCase().includes(query) ||
+        stripHtml(n.body).toLowerCase().includes(query)
+      );
+    })
     .filter((n) => {
       if (timeFilter === "all") return true;
       const created = n.createdAt ? new Date(n.createdAt) : null;
@@ -263,26 +268,27 @@ export default function NoteList({
       <div
         key={id}
         onClick={() => onSelectNote(id)}
-        className={`p-3.5 cursor-pointer transition-all duration-150 relative border-b border-zinc-900/80 ${
-          isSelected
-            ? "bg-zinc-900 border-l-2 border-l-white"
-            : "hover:bg-zinc-900/40 border-l-2 border-l-transparent"
+        className={`group relative mx-2 my-0.5 cursor-pointer rounded-xl p-3 transition-colors duration-150 ${
+          isSelected ? "bg-zinc-900 ring-1 ring-accent/30" : "hover:bg-zinc-900/60"
         }`}
       >
+        {isSelected && (
+          <span className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full bg-accent" />
+        )}
         <div className="flex items-start justify-between gap-2 mb-1">
-          <h3 className="text-xs font-medium text-zinc-100 truncate flex-1">
+          <h3 className="text-sm font-medium text-zinc-100 truncate flex-1">
             {note.title || "Untitled Note"}
           </h3>
           {note.isPinned && (
-            <LuPin size={11} className="text-zinc-400 rotate-45 shrink-0" />
+            <LuPin size={12} className="text-accent-soft rotate-45 shrink-0 mt-0.5" />
           )}
         </div>
 
-        <p className="text-[11px] text-zinc-500 line-clamp-2 mb-2 leading-relaxed font-normal">
+        <p className="text-xs text-zinc-500 line-clamp-2 mb-2 leading-relaxed">
           {plainText || "Empty note..."}
         </p>
 
-        <div className="flex items-center justify-between text-[10px] text-zinc-600 tracking-tight">
+        <div className="flex items-center justify-between text-[11px] text-zinc-600">
           <span>
             {formattedDate} · {words} {words === 1 ? "word" : "words"}
           </span>
@@ -291,14 +297,14 @@ export default function NoteList({
             <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={(e) => handleRestore(e, id)}
-                className="p-1 text-zinc-400 hover:text-emerald-400 transition-colors"
+                className="p-1 rounded-md text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800 transition-colors"
                 title="Restore"
               >
                 <LuRotateCcw size={12} />
               </button>
               <button
                 onClick={(e) => handleDeleteForeverRequest(e, id)}
-                className="p-1 text-zinc-400 hover:text-rose-400 transition-colors"
+                className="p-1 rounded-md text-zinc-400 hover:text-danger-soft hover:bg-zinc-800 transition-colors"
                 title="Delete permanently"
               >
                 <LuTrash2 size={12} />
@@ -311,15 +317,15 @@ export default function NoteList({
   };
 
   return (
-    <div className="w-full h-screen border-r border-zinc-800/80 bg-zinc-950 flex flex-col select-none shrink-0 font-sans">
+    <div className="w-full h-full border-r border-zinc-800/80 bg-zinc-950 flex flex-col select-none shrink-0 font-sans">
       {/* Header */}
-      <div className="p-4 border-b border-zinc-900 space-y-3">
+      <div className="p-4 border-b border-zinc-800 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h1 className="text-xs font-semibold tracking-wider text-zinc-200 uppercase">
+            <h1 className="text-sm font-semibold tracking-tight text-zinc-100">
               {listTitle}
             </h1>
-            <span className="text-xs px-1.5 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-zinc-800">
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-zinc-800 tabular-nums">
               {displayedNotes.length}
             </span>
           </div>
@@ -329,10 +335,10 @@ export default function NoteList({
               <button
                 onClick={handleCreateNote}
                 disabled={creating}
-                className="p-1.5 rounded bg-white text-black hover:text-white hover:bg-zinc-500 transition-colors disabled:opacity-50"
+                className="p-1.5 rounded-lg bg-accent text-accent-ink hover:bg-accent-soft transition-colors disabled:opacity-50"
                 title="Create note"
               >
-                <LuPlus size={15} />
+                <LuPlus size={16} />
               </button>
             )}
 
@@ -340,10 +346,10 @@ export default function NoteList({
             {onTogglePane && (
               <button
                 onClick={onTogglePane}
-                className="hidden sm:flex p-1.5 rounded text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900 transition-colors"
+                className="hidden sm:flex p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900 transition-colors"
                 title="Hide Note List"
               >
-                <LuPanelLeftClose size={20} />
+                <LuPanelLeftClose size={18} />
               </button>
             )}
           </div>
@@ -353,7 +359,7 @@ export default function NoteList({
         <div className="flex items-center gap-1.5">
           <div className="relative flex-1">
             <IoSearch
-              size={13}
+              size={14}
               className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500"
             />
             <input
@@ -361,24 +367,24 @@ export default function NoteList({
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-8 pr-3 py-1 text-xs bg-zinc-900/60 border border-zinc-800/80 rounded text-zinc-200 placeholder-zinc-600 outline-none focus:border-zinc-700 transition-colors"
+              className="w-full pl-8 pr-3 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-200 placeholder-zinc-500 outline-none focus:border-accent/60 transition-colors"
             />
           </div>
 
           <div className="relative">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`p-1.5 rounded border text-xs flex items-center transition-colors ${
+              className={`p-1.5 rounded-lg border text-xs flex items-center transition-colors ${
                 timeFilter !== "all"
-                  ? "bg-zinc-800 text-white border-zinc-700"
-                  : "bg-zinc-900/60 text-zinc-500 border-zinc-800/80 hover:text-zinc-300"
+                  ? "bg-accent/15 text-accent-soft border-accent/40"
+                  : "bg-zinc-900 text-zinc-500 border-zinc-800 hover:text-zinc-300 hover:border-zinc-700"
               }`}
             >
               <LuFilter size={12} />
             </button>
 
             {showFilters && (
-              <div className="absolute right-0 mt-2 w-36 bg-zinc-900 border border-zinc-800 rounded shadow-2xl py-1 z-20">
+              <div className="absolute right-0 mt-2 w-40 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl shadow-black/40 p-1 z-20 menu-pop">
                 {Object.entries(TIME_FILTERS).map(([key, { label }]) => (
                   <button
                     key={key}
@@ -386,10 +392,10 @@ export default function NoteList({
                       setTimeFilter(key);
                       setShowFilters(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 text-[11px] transition-colors ${
+                    className={`w-full text-left rounded-md px-2.5 py-1.5 text-[11px] transition-colors ${
                       timeFilter === key
-                        ? "text-white bg-zinc-800 font-medium"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+                        ? "text-accent-soft bg-accent/15 font-medium"
+                        : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
                     }`}
                   >
                     {label}
@@ -410,23 +416,33 @@ export default function NoteList({
             <NoteSkeleton />
           </>
         ) : displayedNotes.length === 0 ? (
-          <div className="p-8 text-center text-zinc-600 text-xs">
-            No notes found.
+          <div className="flex flex-col items-center gap-2 px-6 py-14 text-center">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 text-zinc-500">
+              <LuFileText size={20} />
+            </div>
+            <p className="text-sm text-zinc-400">No notes found</p>
+            <p className="text-xs text-zinc-600">
+              {isTrash
+                ? "Deleted notes show up here."
+                : search
+                  ? "Try a different search."
+                  : "Create one with the + button."}
+            </p>
           </div>
         ) : (
           <div>
             {/* PINNED SECTION */}
             {pinnedNotes.length > 0 && (
-              <div className="border-b border-zinc-900">
+              <div className="border-b border-zinc-800/70 pb-1 mb-1">
                 <button
                   onClick={() => setPinnedOpen(!pinnedOpen)}
-                  className="w-full px-3.5 py-1.5 flex items-center justify-between text-[10px] font-medium text-zinc-500 uppercase tracking-widest bg-zinc-950 hover:text-zinc-300 transition-colors"
+                  className="w-full px-4 py-2 flex items-center justify-between text-[11px] font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
                 >
                   <span className="flex items-center gap-1.5">
                     {pinnedOpen ? (
-                      <LuChevronDown size={11} />
+                      <LuChevronDown size={12} />
                     ) : (
-                      <LuChevronRight size={11} />
+                      <LuChevronRight size={12} />
                     )}
                     Pinned ({pinnedNotes.length})
                   </span>
@@ -444,13 +460,13 @@ export default function NoteList({
                 {pinnedNotes.length > 0 && (
                   <button
                     onClick={() => setUnpinnedOpen(!unpinnedOpen)}
-                    className="w-full px-3.5 py-1.5 flex items-center justify-between text-[10px] font-medium text-zinc-500 uppercase tracking-widest bg-zinc-950 hover:text-zinc-300 transition-colors"
+                    className="w-full px-4 py-2 flex items-center justify-between text-[11px] font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
                   >
                     <span className="flex items-center gap-1.5">
                       {unpinnedOpen ? (
-                        <LuChevronDown size={11} />
+                        <LuChevronDown size={12} />
                       ) : (
-                        <LuChevronRight size={11} />
+                        <LuChevronRight size={12} />
                       )}
                       Notes ({unpinnedNotes.length})
                     </span>

@@ -15,7 +15,10 @@ import JournalEditor from "./JournalEditor";
 import JournalList from "./JournalList";
 import JournalTrash from "./JournalTrash";
 
-import { FiBookOpen, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiTrash2, FiPlus } from "react-icons/fi";
+import { LuBookOpen } from "react-icons/lu";
+import PageShell from "../../../components/PageShell";
+import PageHeader from "../../../components/PageHeader";
 
 export default function Journal() {
   const { accessToken } = useAuth();
@@ -113,25 +116,21 @@ export default function Journal() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 p-6 text-zinc-200 font-sans">
-      <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-5">
-          <div className="flex items-center gap-3">
-            <FiBookOpen className="text-2xl text-zinc-400" />
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              Journal
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-2">
+    <PageShell>
+      <div className="space-y-6">
+        <PageHeader
+          icon={LuBookOpen}
+          title="Journal"
+          description="Write and revisit your daily reflections."
+          actions={
+            <>
             <button
               onClick={() => {
                 setCurrentView("active");
                 setIsCreating(true);
                 setEditingJournal(null);
               }}
-              className="flex items-center gap-1.5 rounded-xl bg-zinc-100 px-4 py-2 text-xs font-semibold text-zinc-900 hover:bg-zinc-300 transition-colors"
+              className="flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-semibold text-accent-ink hover:bg-accent-soft transition-colors"
             >
               <FiPlus className="h-4 w-4" />
               <span>New Entry</span>
@@ -152,8 +151,9 @@ export default function Journal() {
               <FiTrash2 className="h-3.5 w-3.5" />
               <span>Trash ({trashedJournals.length})</span>
             </button>
-          </div>
-        </div>
+            </>
+          }
+        />
 
         {/* Editor Area */}
         {(isCreating || editingJournal) && (
@@ -192,6 +192,6 @@ export default function Journal() {
           />
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

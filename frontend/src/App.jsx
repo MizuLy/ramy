@@ -27,22 +27,22 @@ export default function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: "#18181b", // zinc-900
+            background: "#2a1b14", // chocolate
             color: "#fff",
-            border: "1px solid #27272a", // zinc-800
+            border: "1px solid #3b271d", // chocolate border
             fontSize: "13px",
             borderRadius: "8px",
           },
           success: {
             iconTheme: {
               primary: "#22c55e", // green-500
-              secondary: "#18181b",
+              secondary: "#2a1b14",
             },
           },
           error: {
             iconTheme: {
-              primary: "#ef4444", // red-500
-              secondary: "#18181b",
+              primary: "#E5484D", // danger
+              secondary: "#2a1b14",
             },
           },
         }}

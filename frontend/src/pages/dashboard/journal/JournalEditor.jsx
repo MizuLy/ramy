@@ -46,7 +46,7 @@ const MOODS = [
     label: "SAD",
     display: "Sad",
     icon: FiFrown,
-    color: "text-rose-400 bg-rose-500/10 border-rose-500/20",
+    color: "text-danger-soft bg-danger/10 border-danger/20",
   },
 ];
 
@@ -151,7 +151,7 @@ export default function JournalEditor({ journal, onSave, onCancel, loading }) {
           <button
             type="submit"
             disabled={loading || !content.trim()}
-            className="flex items-center gap-1.5 rounded-xl bg-zinc-100 px-5 py-2 text-xs font-semibold text-zinc-900 hover:bg-zinc-300 transition-all disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-xl bg-accent px-5 py-2 text-xs font-semibold text-accent-ink hover:bg-accent-soft transition-all disabled:opacity-40"
           >
             <FiSave className="h-3.5 w-3.5" />
             <span>{loading ? "Saving..." : journal ? "Update" : "Save"}</span>

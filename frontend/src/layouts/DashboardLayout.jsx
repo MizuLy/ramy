@@ -18,7 +18,7 @@ export default function DashboardLayout() {
           className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
           aria-label="Open sidebar"
         >
-          <LuMenu size={20} />
+          <LuMenu size={18} />
         </button>
         <span className="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-zinc-300 uppercase select-none">
           <img

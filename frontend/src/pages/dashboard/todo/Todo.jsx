@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../context/AuthProvider";
+import DatePicker from "../../../components/DatePicker";
+import PageShell from "../../../components/PageShell";
+import PageHeader from "../../../components/PageHeader";
 import {
   getTodos,
   createTodo,
@@ -16,6 +19,38 @@ import {
   LuListTodo,
   LuCalendar,
 } from "react-icons/lu";
+
+const DUE_TONES = {
+  overdue: "text-danger-soft bg-danger/10 border-danger/20",
+  today: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+  upcoming: "text-zinc-500 bg-zinc-900 border-zinc-800",
+};
+
+// Read the calendar day from the ISO string so timezones can't shift it.
+const formatDue = (value, isDone) => {
+  const [y, m, d] = String(value).slice(0, 10).split("-").map(Number);
+  const due = new Date(y, m - 1, d);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = Math.round((due - today) / 86400000);
+
+  let label;
+  if (diff === 0) label = "Today";
+  else if (diff === 1) label = "Tomorrow";
+  else if (diff === -1) label = "Yesterday";
+  else {
+    label = due.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      ...(due.getFullYear() !== today.getFullYear() && { year: "numeric" }),
+    });
+  }
+
+  let tone = "upcoming";
+  if (!isDone && diff < 0) tone = "overdue";
+  else if (!isDone && diff === 0) tone = "today";
+  return { label, tone };
+};
 
 export default function Todo() {
   const { accessToken } = useAuth();
@@ -134,25 +169,12 @@ export default function Todo() {
   const pendingCount = todos.filter((t) => !t.isDone).length;
 
   return (
-    <div className="flex-1 h-screen flex flex-col bg-zinc-950 text-zinc-200 overflow-hidden">
-      <div className="w-full max-w-2xl mx-auto flex flex-col h-full px-3 sm:px-4 pt-4 sm:pt-6 pb-4">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-zinc-800/80">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-300 shrink-0">
-              <LuListTodo size={18} />
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                To-do List
-              </h1>
-              <p className="text-xs text-zinc-500">
-                {pendingCount} pending task{pendingCount === 1 ? "" : "s"}
-              </p>
-            </div>
-          </div>
-
-          {/* Filter Tabs */}
+    <PageShell>
+      <PageHeader
+        icon={LuListTodo}
+        title="To-do List"
+        description={`${pendingCount} pending task${pendingCount === 1 ? "" : "s"}`}
+        actions={
           <div className="flex items-center bg-zinc-900 border border-zinc-800/80 p-0.5 rounded-lg text-xs self-start sm:self-auto">
             {["all", "active", "completed"].map((f) => (
               <button
@@ -161,7 +183,7 @@ export default function Todo() {
                 onClick={() => setFilter(f)}
                 className={`px-2.5 py-1 rounded-md capitalize font-medium transition-colors ${
                   filter === f
-                    ? "bg-zinc-800 text-white shadow-sm"
+                    ? "bg-accent/15 text-accent-soft shadow-sm"
                     : "text-zinc-500 hover:text-zinc-300"
                 }`}
               >
@@ -169,7 +191,8 @@ export default function Todo() {
               </button>
             ))}
           </div>
-        </div>
+        }
+      />
 
         {/* Create Form */}
         <form
@@ -181,21 +204,20 @@ export default function Todo() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Add a new task..."
-            className="flex-1 bg-zinc-900/60 border border-zinc-800 focus:border-zinc-700 text-sm text-white placeholder-zinc-600 rounded-md px-3 py-2 outline-none transition-colors min-w-0"
+            className="flex-1 bg-zinc-900/60 border border-zinc-800 focus:border-accent/60 text-sm text-white placeholder-zinc-600 rounded-md px-3 py-2 outline-none transition-colors min-w-0"
           />
 
           <div className="flex items-center gap-2">
-            <input
-              type="date"
+            <DatePicker
               value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="flex-1 sm:flex-initial bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 rounded-md px-2.5 py-2 outline-none cursor-pointer hover:bg-zinc-800 transition-colors [color-scheme:dark]"
+              onChange={setDueDate}
+              className="flex-1 sm:flex-initial"
             />
 
             <button
               type="submit"
               disabled={!title.trim() || submitting}
-              className="flex items-center gap-1.5 px-3 py-2 bg-zinc-100 hover:bg-zinc-300 disabled:opacity-40 text-zinc-900 text-xs font-semibold rounded-md transition-colors shrink-0"
+              className="flex items-center gap-1.5 px-3 py-2 bg-accent hover:bg-accent-soft disabled:opacity-40 text-accent-ink text-xs font-semibold rounded-md transition-colors shrink-0"
             >
               <LuPlus size={14} />
               <span>{submitting ? "Adding..." : "Add"}</span>
@@ -204,7 +226,7 @@ export default function Todo() {
         </form>
 
         {/* Task List */}
-        <div className="flex-1 mt-4 overflow-y-auto space-y-2 pr-1">
+        <div className="mt-4 space-y-2">
           {loading ? (
             <div className="h-48 flex items-center justify-center text-zinc-500 text-xs">
               Loading tasks...
@@ -250,17 +272,23 @@ export default function Todo() {
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0 ml-8 sm:ml-0">
-                    {todo.dueDate && (
-                      <span className="flex items-center gap-1 text-[11px] text-zinc-500 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded">
-                        <LuCalendar size={11} />
-                        {new Date(todo.dueDate).toLocaleDateString()}
-                      </span>
-                    )}
+                    {todo.dueDate &&
+                      (() => {
+                        const { label, tone } = formatDue(todo.dueDate, isDone);
+                        return (
+                          <span
+                            className={`flex items-center gap-1 text-[11px] font-medium border px-2 py-0.5 rounded-md ${DUE_TONES[tone]}`}
+                          >
+                            <LuCalendar size={12} />
+                            {label}
+                          </span>
+                        );
+                      })()}
 
                     <button
                       type="button"
                       onClick={() => handleDeleteTodo(id)}
-                      className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-zinc-500 hover:text-rose-400 transition-all rounded"
+                      className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-zinc-500 hover:text-danger-soft transition-all rounded"
                       title="Delete task"
                     >
                       <LuTrash2 size={14} />
@@ -271,7 +299,6 @@ export default function Todo() {
             })
           )}
         </div>
-      </div>
-    </div>
+    </PageShell>
   );
 }

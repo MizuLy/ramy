@@ -66,7 +66,7 @@ export default function DeleteFolderModal({
         </div>
 
         {error && (
-          <p className="mt-3 text-xs text-red-400 bg-red-500/10 p-2 rounded border border-red-500/20">
+          <p className="mt-3 text-xs text-danger-soft bg-danger/10 p-2 rounded border border-danger/20">
             {error}
           </p>
         )}
@@ -84,7 +84,7 @@ export default function DeleteFolderModal({
             type="button"
             onClick={handleDelete}
             disabled={loading}
-            className="px-4 py-2 rounded-lg text-sm bg-red-600 hover:bg-red-500 text-white disabled:opacity-50"
+            className="px-4 py-2 rounded-lg text-sm bg-danger hover:bg-danger-strong text-danger-ink disabled:opacity-50"
           >
             {loading ? "Deleting..." : "Delete Folder"}
           </button>

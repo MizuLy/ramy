@@ -46,12 +46,12 @@ export default function Register() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex overflow-hidden selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex overflow-hidden selection:bg-accent/30 selection:text-accent-soft">
       {/* LEFT SIDE: Visual Brand / Atmospheric Section (Desktop Only) */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 p-12 lg:p-16 bg-zinc-900/60 border-r border-zinc-800/80 relative overflow-hidden">
         {/* Background Ambient Glows */}
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent-strong/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-accent-strong/10 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Top Header / Logo */}
         <div className="relative z-10 flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function Register() {
         </div>
 
         {/* Mobile Background Ambient Glow */}
-        <div className="lg:hidden fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="lg:hidden fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-accent-strong/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-sm space-y-6">
           {/* Form Header */}
@@ -114,7 +114,7 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="w-full space-y-4">
             {/* Error Alert */}
             {error && (
-              <div className="p-3 text-xs bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg backdrop-blur-sm animate-in fade-in zoom-in-95 duration-150">
+              <div className="p-3 text-xs bg-danger/10 border border-danger/20 text-danger-soft rounded-lg backdrop-blur-sm animate-in fade-in zoom-in-95 duration-150">
                 {error}
               </div>
             )}
@@ -135,7 +135,7 @@ export default function Register() {
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all duration-200"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm transition-all duration-200"
               />
             </div>
 
@@ -155,7 +155,7 @@ export default function Register() {
                 placeholder="name@example.com"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all duration-200"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm transition-all duration-200"
               />
             </div>
 
@@ -175,7 +175,7 @@ export default function Register() {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all duration-200"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 outline-none focus:border-accent focus:ring-1 focus:ring-accent text-sm transition-all duration-200"
               />
             </div>
 
@@ -183,12 +183,12 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none text-white text-sm font-medium rounded-lg shadow-lg shadow-indigo-600/20 transition-all duration-150 flex justify-center items-center"
+              className="w-full mt-2 py-2.5 px-4 bg-accent hover:bg-accent-soft active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none text-accent-ink text-sm font-medium rounded-lg shadow-lg shadow-accent/20 transition-all duration-150 flex justify-center items-center"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
                   <svg
-                    className="animate-spin h-4 w-4 text-white"
+                    className="animate-spin h-4 w-4 text-accent-ink"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -220,7 +220,7 @@ export default function Register() {
             <span>Already have an account? </span>
             <Link
               to="/login"
-              className="text-indigo-400 font-medium hover:text-indigo-300 hover:underline transition-colors"
+              className="text-accent-soft font-medium hover:text-accent-soft hover:underline transition-colors"
             >
               Log in
             </Link>

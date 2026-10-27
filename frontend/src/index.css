@@ -11,63 +11,91 @@
 @layer base {
   /* LIGHT Theme Overrides */
   :root, [data-theme="light"] {
-    --text-main: #09090b;
+    --text-main: #2a1b14;
 
     /* Remap static white/black to adapt to light mode */
-    --color-white: 9 9 11;       /* text-white -> dark black */
+    --color-white: 26 17 13;       /* text-white -> dark black */
     --color-black: 255 255 255; /* bg-black -> pure white */
 
     /* Backgrounds: Whites and soft grays */
-    --color-zinc-950: 255 255 255; /* Main bg */
-    --color-zinc-850: 250 250 250; /* Sidebar */
-    --color-zinc-900: 244 244 245; /* Cards / Sidebar */
-    --color-zinc-800: 228 228 231; /* Inputs / Hover states / Light borders */
-    --color-zinc-700: 212 212 216; /* Darker borders */
+    --color-zinc-950: 244 251 247; /* Main bg */
+    --color-zinc-850: 236 247 241; /* Sidebar */
+    --color-zinc-900: 225 242 233; /* Cards / Sidebar */
+    --color-zinc-800: 207 230 218; /* Inputs / Hover states / Light borders */
+    --color-zinc-700: 181 212 196; /* Darker borders */
 
     /* Text & Icons: High contrast dark grays/blacks */
-    --color-zinc-500: 113 113 122; /* Subtext */
-    --color-zinc-400: 39 39 42;    /* Headings / Titles */
-    --color-zinc-200: 9 9 11;      /* Primary text */
-    --color-zinc-100: 0 0 0;       /* Pure black */
+    --color-zinc-500: 107 85 71; /* Subtext */
+    --color-zinc-600: 140 118 104;
+    --color-zinc-400: 74 52 40;
+    --color-zinc-300: 58 40 30;    /* Headings / Titles */
+    --color-zinc-200: 42 27 20;      /* Primary text */
+    --color-zinc-100: 26 17 13;       /* Pure black */
 
     /* Neutral aliases used by modal and error screens */
-    --color-neutral-950: 255 255 255;
-    --color-neutral-900: 244 244 245;
-    --color-neutral-800: 228 228 231;
-    --color-neutral-700: 212 212 216;
-    --color-neutral-600: 161 161 170;
-    --color-neutral-500: 113 113 122;
-    --color-neutral-400: 82 82 91;
-    --color-neutral-300: 63 63 70;
-    --color-neutral-200: 39 39 42;
+    --color-neutral-950: 244 251 247;
+    --color-neutral-900: 225 242 233;
+    --color-neutral-800: 207 230 218;
+    --color-neutral-700: 181 212 196;
+    --color-neutral-600: 150 185 168;
+    --color-neutral-500: 107 85 71;
+    --color-neutral-400: 90 66 52;
+    --color-neutral-300: 74 52 40;
+    --color-neutral-200: 42 27 20;
+
+    /* Accent (mint, deepened for contrast on light surfaces) */
+    --accent-soft: 4 120 87;
+    --accent: 5 150 105;
+    --accent-strong: 4 120 87;
+    --accent-ink: 255 255 255;
+
+    /* Danger (deep red for contrast on light surfaces) */
+    --danger-soft: 190 40 50;
+    --danger: 214 51 60;
+    --danger-strong: 185 35 45;
+    --danger-ink: 255 255 255;
   }
 
   /* BLACK / DARK Theme Overrides */
   [data-theme="black"], [data-theme="dark"], .dark {
-    --text-main: #e4e4e7;
+    --text-main: #f1e8e1;
 
     --color-white: 255 255 255; /* Normal white */
     --color-black: 0 0 0;       /* Normal black */
 
-    --color-zinc-950: 9 9 11;
-    --color-zinc-850: 16 16 19;
-    --color-zinc-900: 24 24 27;
-    --color-zinc-800: 39 39 42;
-    --color-zinc-700: 63 63 70;
-    --color-zinc-500: 113 113 122;
-    --color-zinc-400: 161 161 170;
-    --color-zinc-200: 228 228 231;
-    --color-zinc-100: 244 244 245;
+    --color-zinc-950: 26 17 13;
+    --color-zinc-850: 32 21 15;
+    --color-zinc-900: 42 27 20;
+    --color-zinc-800: 59 39 29;
+    --color-zinc-700: 82 56 42;
+    --color-zinc-500: 154 129 116;
+    --color-zinc-600: 118 93 79;
+    --color-zinc-400: 194 174 162;
+    --color-zinc-300: 217 202 192;
+    --color-zinc-200: 241 232 225;
+    --color-zinc-100: 251 246 241;
 
-    --color-neutral-950: 9 9 11;
-    --color-neutral-900: 23 23 23;
-    --color-neutral-800: 38 38 38;
-    --color-neutral-700: 64 64 64;
-    --color-neutral-600: 82 82 82;
-    --color-neutral-500: 115 115 115;
-    --color-neutral-400: 163 163 163;
-    --color-neutral-300: 212 212 212;
-    --color-neutral-200: 229 229 229;
+    --color-neutral-950: 26 17 13;
+    --color-neutral-900: 42 27 20;
+    --color-neutral-800: 59 39 29;
+    --color-neutral-700: 82 56 42;
+    --color-neutral-600: 110 80 62;
+    --color-neutral-500: 154 129 116;
+    --color-neutral-400: 194 174 162;
+    --color-neutral-300: 222 207 197;
+    --color-neutral-200: 241 232 225;
+
+    /* Accent (mint) */
+    --accent-soft: 110 231 183;
+    --accent: 52 211 153;
+    --accent-strong: 16 185 129;
+    --accent-ink: 26 17 13;
+
+    /* Danger (soft coral red) */
+    --danger-soft: 255 138 128;
+    --danger: 229 72 77;
+    --danger-strong: 200 52 58;
+    --danger-ink: 255 255 255;
   }
 
   html, body, #root {
@@ -79,6 +107,36 @@
     transition: background-color 180ms ease, color 180ms ease;
   }
 }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--color-zinc-700));
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--accent) / 0.7);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-corner { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-width: thin; scrollbar-color: rgb(var(--color-zinc-700)) transparent; }
+}
+
+@keyframes menu-pop {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.menu-pop { animation: menu-pop 120ms ease-out; transform-origin: top; }
+
+:focus-visible { outline: 2px solid rgb(var(--accent) / 0.6); outline-offset: 2px; }
 
 /* Custom Utility Classes for Dynamic Text & Borders */
 @layer utilities {
@@ -92,41 +150,87 @@
 
   /* Keep modal scrims dark in both themes; black is a visual overlay, not a surface token. */
   [data-theme="light"] .bg-black\/60 {
-    background-color: rgb(9 9 11 / 0.6) !important;
+    background-color: rgb(26 17 13 / 0.6) !important;
   }
 }
 
 /* Dynamic Tiptap / ProseMirror Editor Styling */
 .ProseMirror {
   outline: none !important;
-  min-height: 300px;
+  min-height: 320px;
   white-space: pre-wrap !important;
   color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.75;
+  caret-color: rgb(var(--accent));
+  word-break: break-word;
 }
 
-.ProseMirror p { margin-bottom: 0.5rem; }
+.ProseMirror > * + * { margin-top: 0.75rem; }
+.ProseMirror p { margin: 0; }
+.ProseMirror p + p { margin-top: 0.75rem; }
 .ProseMirror strong { font-weight: 700 !important; color: var(--text-main) !important; }
 .ProseMirror em { font-style: italic !important; }
-.ProseMirror u { text-decoration: underline !important; }
-.ProseMirror s { text-decoration: line-through !important; }
+.ProseMirror u { text-decoration: underline !important; text-underline-offset: 3px; }
+.ProseMirror s { text-decoration: line-through !important; opacity: 0.7; }
 
-.ProseMirror h1 { font-size: 1.875rem !important; font-weight: 700 !important; color: var(--text-main) !important; margin: 0.75rem 0; }
-.ProseMirror h2 { font-size: 1.5rem !important; font-weight: 600 !important; color: var(--text-main) !important; margin: 0.5rem 0; }
-.ProseMirror h3 { font-size: 1.25rem !important; font-weight: 600 !important; color: var(--text-main) !important; margin: 0.5rem 0; }
-
-.ProseMirror ul { list-style-type: disc !important; padding-left: 1.25rem !important; }
-.ProseMirror ol { list-style-type: decimal !important; padding-left: 1.25rem !important; }
-
-.ProseMirror blockquote { 
-  border-left: 3px solid rgb(var(--color-zinc-800)) !important; 
-  padding-left: 0.75rem !important; 
-  color: rgb(var(--color-zinc-400)) !important; 
-}
-
-.ProseMirror code { 
-  background-color: rgb(var(--color-zinc-800)) !important; 
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
   color: var(--text-main) !important;
-  padding: 0.1rem 0.3rem !important; 
-  border-radius: 0.2rem !important; 
-  font-family: monospace !important; 
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
+.ProseMirror h1 { font-size: 1.875rem !important; font-weight: 700 !important; margin-top: 1.75rem; }
+.ProseMirror h2 { font-size: 1.5rem !important; font-weight: 650 !important; margin-top: 1.5rem; }
+.ProseMirror h3 { font-size: 1.2rem !important; font-weight: 600 !important; margin-top: 1.25rem; }
+.ProseMirror > :first-child { margin-top: 0; }
+
+.ProseMirror ul { list-style-type: disc !important; padding-left: 1.5rem !important; }
+.ProseMirror ol { list-style-type: decimal !important; padding-left: 1.5rem !important; }
+.ProseMirror li { margin-top: 0.25rem; }
+.ProseMirror li::marker { color: rgb(var(--accent)); }
+.ProseMirror li > p { margin: 0; }
+
+.ProseMirror blockquote {
+  border-left: 3px solid rgb(var(--accent) / 0.6) !important;
+  background: rgb(var(--accent) / 0.06);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.5rem 1rem !important;
+  color: rgb(var(--color-zinc-400)) !important;
+}
+.ProseMirror blockquote p { margin: 0; }
+
+.ProseMirror code {
+  background-color: rgb(var(--accent) / 0.12) !important;
+  color: rgb(var(--accent-soft)) !important;
+  padding: 0.1rem 0.35rem !important;
+  border-radius: 0.375rem !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 0.875em;
+}
+
+.ProseMirror pre {
+  background-color: rgb(var(--color-zinc-900)) !important;
+  border: 1px solid rgb(var(--color-zinc-800));
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.ProseMirror pre code {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  padding: 0 !important;
+  font-size: inherit;
+}
+
+.ProseMirror hr {
+  border: none;
+  border-top: 1px solid rgb(var(--color-zinc-800));
+  margin: 1.5rem 0;
+}
+
+.ProseMirror a { color: rgb(var(--accent-soft)); text-decoration: underline; text-underline-offset: 3px; }
+.ProseMirror ::selection { background: rgb(var(--accent) / 0.3); }

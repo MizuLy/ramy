@@ -139,7 +139,7 @@ export default function Notes() {
   }, [tagId, accessToken]);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden select-none bg-black">
+    <div className="flex h-full w-full overflow-hidden select-none bg-zinc-950">
       {/* 
         List Pane:
         - Mobile: Original behavior (full width if no note selected, hidden if note selected).
@@ -174,7 +174,7 @@ export default function Notes() {
         - Desktop: Expands to remaining space.
       */}
       <div
-        className={`flex-1 flex-col min-w-0 h-screen relative ${
+        className={`flex-1 flex-col min-w-0 h-full relative ${
           selectedNoteId ? "flex" : "hidden sm:flex"
         }`}
       >
@@ -185,7 +185,7 @@ export default function Notes() {
             className="hidden sm:flex absolute top-4 left-4 z-30 p-2 rounded-lg bg-zinc-900/90 border border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 shadow-2xl backdrop-blur-md transition-all duration-150"
             title="Expand Note List"
           >
-            <LuPanelLeftOpen size={17} />
+            <LuPanelLeftOpen size={18} />
           </button>
         )}
 
@@ -204,7 +204,7 @@ export default function Notes() {
           /* Desktop Empty State when no note is active */
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-black">
             <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-zinc-300 mb-4 shadow-2xl backdrop-blur-md">
-              <LuFileText size={22} className="stroke-[1.5]" />
+              <LuFileText size={24} className="stroke-[1.5]" />
             </div>
 
             <h2 className="text-sm font-semibold text-zinc-100 tracking-tight">

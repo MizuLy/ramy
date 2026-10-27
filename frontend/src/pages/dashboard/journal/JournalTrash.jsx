@@ -50,7 +50,7 @@ export default function JournalTrash({
 
                 <button
                   onClick={() => onPermanentDelete(id)}
-                  className="flex items-center gap-1 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs text-rose-400 hover:bg-rose-500/20 transition-colors"
+                  className="flex items-center gap-1 rounded-lg border border-danger/30 bg-danger/10 px-3 py-1.5 text-xs text-danger-soft hover:bg-danger/20 transition-colors"
                 >
                   <FiTrash2 className="h-3 w-3" />
                   <span>Delete Forever</span>
