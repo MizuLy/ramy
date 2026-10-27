@@ -19,7 +19,7 @@ Two separate apps live in a single repo:
 | Directory | Stack |
 |-----------|-------|
 | `backend/` | Node.js + Express 5, Prisma ORM, PostgreSQL, JWT, Cloudinary, Brevo (email) |
-| `frontend/` | React 19 + Vite 8, React Router 7, TipTap 3, Tailwind + daisyUI, Axios |
+| `frontend/` | React 19 + Vite 8, React Router 7, TipTap 3, Tailwind, Axios |
 
 ## 2. Environment Variables (backend `.env`)
 
@@ -56,7 +56,7 @@ Ramy (Note-app)/
 │       └── validators/       # auth.validator.js (Zod schemas for /auth routes)
 └── frontend/
     ├── vite.config.js
-    ├── tailwind.config.js    # custom zinc palette + fonts + daisyUI themes
+    ├── tailwind.config.js    # custom zinc palette + mint accent + fonts
     └── src/
         ├── main.jsx          # providers: BrowserRouter > AuthProvider > ThemeProvider
         ├── App.jsx           # all routes + toast config
@@ -184,9 +184,9 @@ Plain axios wrappers (not a shared instance). Every authed call passes `Authoriz
 
 ### Styling
 
-- Tailwind with a **custom zinc palette** (950/900/800/700/500/400/200/100) backed by CSS variables in `src/index.css`; arbitrary values like `zinc-600`, `zinc-300` are **not** defined and should be avoided.
+- Tailwind with a **custom zinc palette** (950/900/850/800/700/600/500/400/300/200/100) backed by CSS variables in `src/index.css`; shades outside that set (e.g. `zinc-50`) fall back to fixed Tailwind greys that ignore the theme.
 - The global `user-select: none` rule in `src/index.css` is **disabled** (commented out), so app text is user-selectable.
-- daisyUI themes: `light`, `dark`, `black`. Fonts: Belanosima, Instrument Sans, Josefin Sans, Noto Sans Khmer, Comfortaa.
+- Themes: `light`, `dark`, `black` (via `data-theme`, no component library). Palette is mint and chocolate, with the accent in `accent`, `accent-soft` and `accent-strong`. Fonts: Belanosima, Instrument Sans, Noto Sans Khmer.
 - Icons: `react-icons` — `Lu*` (lucide) is the dominant family; some `Io5`, `Pi`, `Go`, `Ri` icons appear in the Sidebar. `react-hot-toast` is the toast library.
 
 ## 7. Conventions & Gotchas

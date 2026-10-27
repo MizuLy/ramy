@@ -9,7 +9,7 @@ A full-stack note-taking application ("RAM Shortage") with notes (rich-text, pin
 | Directory | Stack |
 |-----------|-------|
 | `backend/` | Node.js + Express 5, Prisma ORM, PostgreSQL, JWT, Cloudinary, Brevo (email) |
-| `frontend/` | React 19 + Vite, React Router 7, TipTap 3, Tailwind + daisyUI, Axios |
+| `frontend/` | React 19 + Vite, React Router 7, TipTap 3, Tailwind, Axios |
 
 ## Repository Structure
 
